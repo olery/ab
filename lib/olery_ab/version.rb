@@ -1,3 +1,5 @@
-module Olery::AB
-  VERSION = "0.0.1"
+module Olery
+  module AB
+    VERSION = "0.0.1"
+  end
 end
