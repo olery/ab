@@ -98,7 +98,7 @@ Or install it yourself as:
 
 The main class is the ```Ab::Tester``` class which takes several options as arguments:
 
-General Usage:
+## General Usage:
 ```ruby
 tester = Ab::Tester.new(:name=>"test_name", :options=>[true, false], :chances=>"50/50")
 tester.for(user.id) # Will return true or false, depending on the user.id
@@ -111,6 +111,27 @@ tester.for(user.id) # Will return true or false, depending on the user.id
 * ```chances```: (required) String representing the chances of the options e.g. ```"10/20/70"```
 * ```indexer```: A class that responds a class level ```call(opts={})``` which contains the logic on how to get from a value, seed and chances to a choice. See the source code of the basic Indexer.
 
+### If you use rails
+
+You can also use the view helper ```ab``` with the exact same options as above
+
+option 1: using the output directy
+
+```erb
+Hello there <%=ab(:options=>["stranger", "you"], :chances=>"80/20").for(@current_user.id) %>
+```
+
+option 2: using a block:
+
+```erb
+<%=ab(:options=>[:stranger, :you], :chances=>"80/20").for(@current_user.id) do |option| %>
+  <% if option == :stranger %>
+    Hello there stranger!
+  <% elsif options == :you %>
+    Could you please introduce yourself?
+  <% end %>  
+<% end %>
+```
 
 ## Contributing
 
