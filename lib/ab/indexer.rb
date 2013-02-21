@@ -24,6 +24,7 @@ module Ab
       raise IndexError.new("Could not resolve any index for the given chances")
     end
 
+
     private
 
     def self.validate_options(opts)

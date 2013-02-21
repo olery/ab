@@ -38,4 +38,11 @@ describe Ab::Tester do
     Tester.new(:chances=>"0/0/1", :options=>[1,2,3]).call(1235).should eql(3)
   end
 
+  it "should take a block and provide the result to the block" do
+    expect do |b|
+      Tester.new(:chances=>"1/0/0", :options=>[1,2,3])\
+        .call(1235, &b)
+    end.to yield_with_args(1)
+  end
+
 end

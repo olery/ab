@@ -23,8 +23,13 @@ module Ab
     def call(id)
       validate!
       index = @indexer.call(:value=>id,:chances=>chances.to_a, :seed=>name)
-      options[index]
+      if block_given?
+        yield options[index]
+      else
+        return options[index]
+      end
     end
+    alias_method :for, :call
 
     private
     def defaults
