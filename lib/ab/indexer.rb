@@ -8,14 +8,14 @@ module Ab
       salt = opts[:seed].to_s
 
       seed = Digest::SHA1.hexdigest(salt + value).to_i
-      rand = Random.new(seed).rand(1..100)
+      random_number = Randomizer.new(seed).rand(1..100)
 
       sum = 0
       chances.each_index do |index|
         min = sum
         max = chances[index] + sum
 
-        if (min..max).include?(rand)
+        if (min..max).include?(random_number)
           return index
         end
 
@@ -34,6 +34,40 @@ module Ab
 
       if opts[:chances].reduce(&:+)==0
         raise ArgumentError.new("Chances does not actually contain any chance")
+      end
+    end
+
+    class Randomizer
+      attr_reader :randomizer
+
+      def initialize(seed)
+        if RUBY_VERSION =~ /^1.8/
+          @randomizer = OneEight.new(seed)
+        else
+          @randomizer = Random.new(seed)
+        end
+      end
+
+      def rand(value)
+        randomizer.rand(value)
+      end
+
+      private
+
+      class OneEight
+        def initialize(seed)
+          srand(seed)
+        end
+
+        def rand(value)
+          if value.kind_of?(Range)
+            first = value.first
+            last = value.last - first
+            return Kernel::rand(last) + first
+          else
+            Kernel::rand(value)
+          end
+        end
       end
     end
   end
