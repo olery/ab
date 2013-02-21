@@ -3,7 +3,9 @@
 This gem provides you with a way to do AB testing in a deterministic way
 without the need for Redis or any other service.
 
-** NOTICE ** The gem is in very early development
+** NOTICE ** 
+
+*The gem is in very early development*
 
 Since other gems need all kinds of extra services to work, and we didn't want
 any extra dependencies, we created a gem that will serve your users an A/B/C or
@@ -21,12 +23,11 @@ and 1.9.3.
 In your view (haml):
 
 ```haml
--ab(:options=>["dude","your royal highness"], :chances=>"20/80",
-:name=>"greeting").for(@current_user.id) do |option|
+-ab(:options=>["dude","your royal highness"], :chances=>"20/80",:name=>"greeting").for(@current_user.id) do |option|
   ="Well hello #{option}"
 ```
 
-## Setting tests in a controller
+## Defining tests in a controller
 You can also create a tester, for example in your ```app/controllers/application_controller.rb```
 
 ```ruby
@@ -34,8 +35,7 @@ class ApplicationController
   before_filter :ab_tests
 
   def ab_tests
-    @greeting_test = Ab::Tester.new(:options=>["Yo", "Hello"],
-  :chances=>"50/50", :name=>"greeter")
+    @greeting_test = Ab::Tester.new(:options=>["Yo", "Hello"],  :chances=>"50/50", :name=>"greeter")
   end
 end
 ```
@@ -58,8 +58,7 @@ class ApplicationController
   after_filter :track_ab_choices
 
   def ab_tests
-    @greeting_test = Ab::Tester.new(:options=>["Yo", "Hello"],
-  :chances=>"50/50", :name=>"greeter")
+    @greeting_test = Ab::Tester.new(:options=>["Yo", "Hello"],  :chances=>"50/50", :name=>"greeter")
   end
 
   def track_ab_choices
@@ -76,9 +75,9 @@ afterwards, so the following chances result in the exact same chance
 distribution:
 
 ```ruby
- Ab::Tester.new(:chances=>"10/70/30")
- Ab::Tester.new(:chances=>"1/7/3)
- Ab::Tester.new(:chances=>"35/245/105")
+ Ab::Tester.new(:chances=>"10/60/30")
+ Ab::Tester.new(:chances=>"1/6/3")
+ Ab::Tester.new(:chances=>"35/210/105")
 ```
 
 ## Installation
@@ -96,6 +95,21 @@ Or install it yourself as:
     $ gem install ab
 
 ## Usage
+
+The main class is the ```Ab::Tester``` class which takes several options as arguments:
+
+General Usage:
+```ruby
+tester = Ab::Tester.new(:name=>"test_name", :options=>[true, false], :chances=>"50/50")
+tester.for(user.id) # Will return true or false, depending on the user.id
+```
+
+```Ab::Tester``` options:
+
+* ```name```: Name of the tester, used as a seed to the random number generator 
+* ```options```: (required) Array of options to choose from in the test, the options can be anything
+* ```chances```: (required) String representing the chances of the options e.g. ```"10/20/70"```
+* ```indexer```: A class that responds a class level ```call(opts={})``` which contains the logic on how to get from a value, seed and chances to a choice. See the source code of the basic Indexer.
 
 
 ## Contributing
