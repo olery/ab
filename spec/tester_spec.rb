@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-
-describe Olery::AB::Tester do
+describe Ab::Tester do
 
   it "should initialize with no options" do
     expect{Tester.new}.to_not raise_error
@@ -30,16 +29,13 @@ describe Olery::AB::Tester do
   it "should be able to set it's own indexer" do
     Tester.new(:options=>[1,2,3],
                :chances=>"0/0/1",
-               :indexer=>Proc.new{|a,b| 1}).call(1235).should eql(1)
+               :indexer=>Proc.new{|a,b| 1}).call(1235).should eql(2)
   end
 
-  xit "uses a sane default indexer" do
-    Tester.new(:options=>[1,2,3],
-               :chances=>"1/0/0").call(1235).should eql(1)
-    Tester.new(:options=>[1,2,3],
-               :chances=>"0/1/0").call(1235).should eql(2)
-    Tester.new(:options=>[1,2,3],
-               :chances=>"0/0/1").call(1235).should eql(3)
+  it "uses a sane default indexer" do
+    Tester.new(:chances=>"1/0/0", :options=>[1,2,3]).call(1235).should eql(1)
+    Tester.new(:chances=>"0/1/0", :options=>[1,2,3]).call(1235).should eql(2)
+    Tester.new(:chances=>"0/0/1", :options=>[1,2,3]).call(1235).should eql(3)
   end
 
 end

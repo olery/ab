@@ -1,12 +1,18 @@
 require 'spec_helper'
 
-describe Olery::AB::Chance do
+describe Ab::Chance do
   it "should split a string into a an array of integers" do
     Chance.split_chance("10/20/30").should eql([10,20,30])
   end
 
   it "should not accept minus chances" do
     expect{Chance.new("-1/0/0")}.to raise_error(ArgumentError)
+  end
+
+  it "should return normalized chances" do
+    Chance.new("1/0/0").to_a.should eql([100,0,0])
+    Chance.new("0/1/0").to_a.should eql([0,100,0])
+    Chance.new("0/0/1").to_a.should eql([0,0,100])
   end
 
   context "normalizing" do
