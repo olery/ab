@@ -15,6 +15,5 @@ describe "Helper Method" do
   it "should take multiple options" do
     expect{view.ab(:options=>[1,2,3], :chance=>"1/2/2", :input=>50)}.to_not raise_error
   end
-
 end
 
