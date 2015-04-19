@@ -12,7 +12,21 @@ module Ab
     def self.normalize(array)
       sum = array.reduce(&:+)
       factor = 100.to_f / sum
-      array.map{|e| e * factor}.map(&:to_i)
+      normalized_chances = array.map{|e| e * factor}.map(&:to_i)
+      normalized_sum = normalized_chances.reduce(&:+)
+
+      # Check if sum of chances is 100.
+      # If it is not, add +1 to each chance (from last to first)
+      # until it reaches 100.
+      unless normalized_sum == 100
+        index = array.count - 1
+        (100 - normalized_sum).times do
+          normalized_chances[index] += 1
+          index = index < 0 ? array.count - 1 : index - 1
+        end
+      end
+      
+      return normalized_chances
     end
 
     def self.split_chance(string)
