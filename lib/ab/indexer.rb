@@ -7,7 +7,7 @@ module Ab
       chances = opts[:chances]
       salt = opts[:seed].to_s
 
-      seed = Digest::SHA1.hexdigest(salt + value).to_i
+      seed = Digest::SHA1.hexdigest(salt + value).to_i(16)
       random_number = Randomizer.new(seed).rand(1..100)
 
       sum = 0
