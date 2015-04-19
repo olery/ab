@@ -37,6 +37,12 @@ describe Ab::Tester do
     Tester.new(:chances=>"0/1/0", :options=>[1,2,3]).call(1235).should eql(2)
     Tester.new(:chances=>"0/0/1", :options=>[1,2,3]).call(1235).should eql(3)
   end
+  
+  it "returns same result for same input" do
+    100.times do
+      Tester.new(:name => "Test", :options=>[1,2,3], :chances => "1/1/1").call(54321).should eql(3)
+    end
+  end
 
   it "should take a block and provide the result to the block" do
     expect do |b|
