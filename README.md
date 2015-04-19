@@ -14,8 +14,7 @@ whatever version based on for example a user-id
 You can then use e.g. a tool like Mixpanel to track which user saw what, and
 make your AB testing decisions.
 
-The gem works in a Rails and non rails environment. It's tested on ruby 1.8.7
-and 1.9.3.
+The gem works in a Rails and non rails environment. It's tested on ruby 1.8.7, 1.9.3, 2.1.5, 2.2.2, jruby-1.7.8 and rubinius-2.4.0.
 
 # Examples
 
