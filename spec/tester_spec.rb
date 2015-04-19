@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'securerandom'
 
 describe Ab::Tester do
 
@@ -50,5 +51,26 @@ describe Ab::Tester do
         .call(1235, &b)
     end.to yield_with_args(1)
   end
-
+  
+  context 'distribution of results' do
+    it 'distributes almost equally in 1000 iterations 50/50 chance' do
+      result = []
+      1000.times do
+        random = SecureRandom.random_number(1000000000)
+        result << Tester.new(:name => "Test", :chances => "1/1").call(random)
+      end
+    
+      result.count(true).should be_within(50).of(500)
+    end
+    
+    it 'distributes almost equally in 1000 iterations 33/33/33 chance' do
+      result = []
+      1000.times do
+        random = SecureRandom.random_number(1000000000)
+        result << Tester.new(:name => "Test", :options=>[1,2,3], :chances => "1/1/1").call(random)
+      end
+      
+      result.count(1).should be_within(50).of(333)
+    end
+  end
 end
